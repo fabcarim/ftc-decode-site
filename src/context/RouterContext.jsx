@@ -2,14 +2,35 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 
 const RouterContext = createContext(null);
 
+const normalizePath = (rawPath) => {
+  if (!rawPath) return '/';
+  if (rawPath.startsWith('/')) return rawPath;
+  return `/${rawPath}`;
+};
+
 const getHashLocation = () => {
   if (typeof window === 'undefined') {
     return { path: '/', query: new URLSearchParams() };
   }
-  const hash = window.location.hash.replace(/^#/, '') || '/';
-  const [path, queryString] = hash.split('?');
+
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const hash = window.location.hash.replace(/^#/, '');
+
+  if (hash) {
+    const [path, queryString] = hash.split('?');
+    return {
+      path: normalizePath(path),
+      query: new URLSearchParams(queryString || ''),
+    };
+  }
+
+  const fullPath = `${window.location.pathname}${window.location.search}`;
+  const cleanedPath =
+    baseUrl !== '/' && fullPath.startsWith(baseUrl) ? fullPath.slice(baseUrl.length - 1) : fullPath;
+  const [path, queryString] = cleanedPath.split('?');
+
   return {
-    path: path || '/',
+    path: normalizePath(path),
     query: new URLSearchParams(queryString || ''),
   };
 };
@@ -46,11 +67,15 @@ export const useRouter = () => {
 };
 
 export const Link = ({ to, className, onClick, children }) => {
+  const { navigate } = useRouter();
+
   return (
     <a
       href={`#${to}`}
       className={className}
       onClick={(event) => {
+        event.preventDefault();
+        navigate(to);
         onClick?.(event);
       }}
     >

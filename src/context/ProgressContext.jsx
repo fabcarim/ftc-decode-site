@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { safeStorage } from '../utils/storage';
 
 const ProgressContext = createContext(null);
 const STORAGE_KEY = 'ftc-decode-progress-v1';
 
 const loadInitialProgress = () => {
-  if (typeof window === 'undefined') return [];
   try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const stored = safeStorage.getItem(STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch (error) {
     console.error('Failed to load progress', error);
@@ -18,7 +18,7 @@ export const ProgressProvider = ({ children }) => {
   const [completedLessons, setCompletedLessons] = useState(loadInitialProgress);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(completedLessons));
+    safeStorage.setItem(STORAGE_KEY, JSON.stringify(completedLessons));
   }, [completedLessons]);
 
   const toggleLesson = (lessonId) => {

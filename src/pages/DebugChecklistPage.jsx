@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { safeStorage } from '../utils/storage';
 
 const STORAGE_KEY = 'ftc-debug-checklist-v1';
 
@@ -37,9 +38,8 @@ const checklistSections = [
 
 const DebugChecklistPage = () => {
   const initialState = useMemo(() => {
-    if (typeof window === 'undefined') return {};
     try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
+      const stored = safeStorage.getItem(STORAGE_KEY);
       return stored ? JSON.parse(stored) : {};
     } catch (error) {
       console.error('Failed to load checklist', error);
@@ -50,7 +50,7 @@ const DebugChecklistPage = () => {
   const [checkedItems, setCheckedItems] = useState(initialState);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedItems));
+    safeStorage.setItem(STORAGE_KEY, JSON.stringify(checkedItems));
   }, [checkedItems]);
 
   const handleToggle = (key) => {
