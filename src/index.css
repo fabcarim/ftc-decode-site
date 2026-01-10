@@ -9,6 +9,9 @@
   body {
     @apply antialiased text-gray-800 bg-white;
   }
+  mark {
+    @apply rounded bg-yellow-200 px-1 text-gray-900;
+  }
 }
 
 .google-shadow {

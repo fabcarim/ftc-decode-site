@@ -7,4 +7,7 @@ export default defineConfig({
     react(),
   ],
   base: './', // Important for GitHub Pages
+  build: {
+    outDir: 'docs',
+  },
 })
