@@ -13,7 +13,6 @@ const getHashLocation = () => {
     return { path: '/', query: new URLSearchParams() };
   }
 
-  const baseUrl = import.meta.env.BASE_URL || '/';
   const hash = window.location.hash.replace(/^#/, '');
 
   if (hash) {
@@ -24,14 +23,9 @@ const getHashLocation = () => {
     };
   }
 
-  const fullPath = `${window.location.pathname}${window.location.search}`;
-  const cleanedPath =
-    baseUrl !== '/' && fullPath.startsWith(baseUrl) ? fullPath.slice(baseUrl.length - 1) : fullPath;
-  const [path, queryString] = cleanedPath.split('?');
-
   return {
-    path: normalizePath(path),
-    query: new URLSearchParams(queryString || ''),
+    path: '/',
+    query: new URLSearchParams(window.location.search || ''),
   };
 };
 
