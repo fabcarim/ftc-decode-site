@@ -8,6 +8,14 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (function redirectToDocs() {
+        const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+        if (isLocalhost) return;
+        if (window.location.pathname.includes('/docs/')) return;
+        window.location.replace('./docs/');
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
