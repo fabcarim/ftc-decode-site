@@ -2,6 +2,7 @@ import React from 'react';
 import Section from '../Layout/Section';
 import { Code, Eye, Clock, Gamepad2 } from 'lucide-react';
 import Quiz from '../Interactive/Quiz';
+import CodeSnippet from '../CodeSnippet';
 
 const Coding = () => {
     return (
@@ -28,12 +29,11 @@ const Coding = () => {
                         Simile a Scratch, trascini i comandi logici per creare il comportamento del robot.
                         È visivo, intuitivo e perfetto per iniziare.
                     </p>
-                    <div className="bg-gray-100 p-4 rounded-lg text-sm font-mono text-gray-700">
-                        IF (Gamepad.A_Button == Pressed) <br />
-                        &nbsp;&nbsp;THEN Motor.Power = 1.0; <br />
-                        ELSE <br />
-                        &nbsp;&nbsp;THEN Motor.Power = 0;
-                    </div>
+                    <CodeSnippet
+                        code={`IF (Gamepad.A_Button == Pressed)\n  THEN Motor.Power = 1.0;\nELSE\n  THEN Motor.Power = 0;`}
+                        language="text"
+                        filename="BlockLogic.txt"
+                    />
                 </div>
 
                 <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
